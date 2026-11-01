@@ -1,3 +1,124 @@
+
+# Simple RAG Chatbot Using Laravel and Ollama
+
+## Overview
+
+This project is an early experimental implementation of **Retrieval-Augmented Generation (RAG)** using Laravel and a locally hosted Large Language Model (LLM) through Ollama.
+
+The objective was to explore how a conversational AI application could retrieve relevant information from a database and use that information as context when generating responses.
+
+The application was developed as a preliminary technical exploration of RAG concepts rather than a production-ready system.
+
+## Technologies Used
+
+* **PHP / Laravel:** Application development and request handling.
+* **Ollama:** Local hosting and interaction with a language model.
+* **Llama 3.2 (1B):** Used for embedding generation and conversational responses.
+* **MySQL:** Storage and retrieval of documents and their embeddings.
+* **Laravel HTTP Client:** Communication with Ollama's API.
+
+## How It Works
+
+The application follows a simplified RAG workflow:
+
+1. **User Query:** A user submits a question through the chatbot interface.
+2. **Embedding Generation:** The question is converted into a numerical embedding using the locally hosted model.
+3. **Document Retrieval:** The application calculates similarity scores between the query embedding and stored document embeddings using SQL.
+4. **Context Selection:** The three highest-scoring documents are retrieved.
+5. **Prompt Construction:** Retrieved document content is combined with the user's question, instructing the LLM to answer using the supplied context.
+6. **Response Generation:** The LLM generates a conversational response based on the retrieved information.
+
+### Simplified Architecture
+
+```text
+         User Question
+               |
+               v
+       Laravel Application
+               |
+               v
+       Ollama Embedding API
+               |
+               v
+       Query Embedding
+               |
+               v
+       MySQL Document Store
+       (Similarity Search)
+               |
+               v
+       Top 3 Documents
+               |
+               v
+       Context + User Question
+               |
+               v
+       Ollama Generation API
+               |
+               v
+       Generated Response
+```
+
+## Implementation Requirements
+
+The application requires:
+
+* A Laravel application with a configured database connection.
+* A locally running Ollama service at `http://localhost:11434`.
+* The `llama3.2:1b` model available through Ollama.
+* A `documents` database table containing document titles, content, and embeddings.
+
+Document embeddings must already exist in the database and be compatible with the embedding model used for user queries.
+
+The implementation shown focuses on retrieval and response generation; document ingestion and embedding preparation are separate requirements.
+
+## Example Interaction
+
+A user may ask:
+
+**Question:** What information is available about a particular topic?
+
+The application retrieves the three highest-scoring documents and supplies their content to the language model, which attempts to generate an answer based on that context.
+
+## Experimental Scope and Limitations
+
+This project represents an initial attempt to understand and implement the RAG concept.
+
+Several limitations remain:
+
+* Document similarity is calculated using a basic dot-product approach rather than a dedicated vector-search system.
+* Retrieval is restricted to the three highest-scoring documents, without a minimum relevance threshold.
+* The model may generate incorrect or unsupported information despite being instructed to use only the retrieved context.
+* The implementation does not include formal evaluation of retrieval accuracy or response quality.
+* The approach has not been optimised for large document collections or production deployment.
+
+These limitations are relevant to further investigations into knowledge grounding, response verification, and the reliability of LLM-based applications.
+
+## Project Status
+
+**Status: Experimental / Proof of Concept**
+
+This project was developed as an independent technical exploration to gain practical experience with retrieval-augmented language models.
+
+It demonstrates a basic approach to combining database retrieval with locally hosted language-model generation.
+
+The project is not intended for production use and has not undergone formal performance, reliability, or security evaluation.
+
+## Future Improvements
+
+Potential areas for further development include:
+
+* Using a dedicated embedding model and vector database.
+* Improving document similarity and retrieval methods.
+* Introducing relevance thresholds.
+* Evaluating response accuracy and hallucination rates.
+* Exploring independent verification of generated responses.
+
+## Purpose
+
+This repository documents an early practical exploration of retrieval-augmented generation and forms part of my broader interest in AI reliability, knowledge-based systems, and the development of trustworthy AI applications.
+
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
